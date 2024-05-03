@@ -1,12 +1,12 @@
+/*This is the Select Category Screen*/
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:selby/api_services/categoryApi.dart';
 import 'package:selby/core/configuration.dart';
 import 'package:selby/core/ui.dart';
 import 'package:selby/models/category_model.dart';
 import 'package:selby/presentation/category/select_subcategories.dart';
-import 'package:selby/presentation/product/add_autos_screen.dart';
+import 'package:selby/presentation/product/autos/add_autos_screen.dart';
 import 'package:selby/presentation/product/electronics/add_for_electronics.dart';
 import 'package:selby/presentation/widgets/gap_widget.dart';
 import 'package:selby/provider/category_provider.dart';
@@ -47,15 +47,13 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<CategoryProvider>(context, listen: false);
-    // provider.fetchAllCategories();
-    //final args = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder(
         future: provider.fetchAllCategories(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else {
@@ -66,11 +64,8 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen> {
                   crossAxisCount: 2, mainAxisSpacing: 0, crossAxisSpacing: 0),
               itemCount: cdata.length,
               itemBuilder: (context, index) {
-                // final category = provider.categories[index];
                 return MaterialButton(
                   onPressed: () {
-                    // Navigator.pushNamed(context, AddProductScreen.routeName,
-                    //     arguments: category);
                     if (cdata[index].title == 'Autos') {
                       Navigator.push(
                           context,

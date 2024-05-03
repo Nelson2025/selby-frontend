@@ -1,9 +1,8 @@
+/* This is Product Subcategory Screen which shows after selecting categories from HomePage*/
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:selby/core/ui.dart';
-import 'package:selby/presentation/product/add_for_sale_houses_apartments_screen.dart';
 import 'package:selby/presentation/product/productList.dart';
-import 'package:selby/presentation/widgets/gap_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductSubCategory extends StatefulWidget {
@@ -30,7 +29,6 @@ class _ProductSubCategoryState extends State<ProductSubCategory> {
 
   @override
   void initState() {
-    // TODO: implement initState
     getLocation();
     setState(() {
       city;
@@ -42,15 +40,11 @@ class _ProductSubCategoryState extends State<ProductSubCategory> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.category);
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.category.title}"),
       ),
-      body: Container(
-          child: ListView.builder(
-        // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        //     crossAxisCount: 2, mainAxisSpacing: 0, crossAxisSpacing: 0),
+      body: ListView.builder(
         itemCount: widget.category.subcategories.length,
         itemBuilder: (context, index) {
           return ListTile(
@@ -62,27 +56,16 @@ class _ProductSubCategoryState extends State<ProductSubCategory> {
                         builder: (context) => ProductList(
                             subcategoryId: widget.category.subcategories[index],
                             categoryId: widget.category.sId.toString())));
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => AddForSaleHousesApartmentsScreen(
-                //               city: city,
-                //               state: state,
-                //               country: country,
-                //               category: widget.category,
-                //               subcategory: widget.category.subcategories[index],
-                //             )));
               }
             },
             leading: Text(
-              "${widget.category.subcategories[index]}" + city,
+              "${widget.category.subcategories[index]}",
               style: TextStyle(color: AppColors.main, fontSize: 14),
             ),
-            trailing: Icon(Ionicons.arrow_forward_circle),
+            trailing: const Icon(Ionicons.arrow_forward_circle),
           );
-          // final category = provider.categories[index];
         },
-      )),
+      ),
     );
   }
 }

@@ -5,6 +5,8 @@ import 'package:selby/core/configuration.dart';
 import 'package:selby/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+//This api service is to send the phone number to create/login to account
+
 class UserApi {
   static var client = http.Client();
 
@@ -21,8 +23,6 @@ class UserApi {
         {"phone": phone},
       ),
     );
-
-    print(response.body);
 
     if (jsonDecode(response.body)['success'] == true) {
       SharedPreferences preferences = await SharedPreferences.getInstance();

@@ -1,3 +1,4 @@
+/*This is the Initial Enable location Screen*/
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -26,24 +27,6 @@ class _LocationScreenState extends State<LocationScreen> {
   final TextEditingController longitude = TextEditingController();
   final TextEditingController address = TextEditingController();
 
-  // late StreamSubscription<Position> streamSubscription;
-  // void getLocation() async {
-  //   LocationPermission permission;
-  //   permission = await Geolocator.checkPermission();
-  //   permission = await Geolocator.requestPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     //nothing
-  //   }
-  //   Position position = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.low);
-  //   if (position != null) {
-  //     print(position);
-  //   } else {
-  //     ScaffoldMessenger.of(context)
-  //         .showSnackBar(SnackBar(content: Text("services disabled")));
-  //   }
-  // }
-
   void getLocation() async {
     try {
       await determinePosition();
@@ -51,14 +34,10 @@ class _LocationScreenState extends State<LocationScreen> {
       var status = await Permission.location.status;
       if (status.isDenied) {
         openAppSettings();
-        //  ScaffoldMessenger.of(context)
-        //   .showSnackBar(SnackBar(content: Text(ex.toString())));
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(ex.toString())));
       }
-      // ScaffoldMessenger.of(context)
-      //     .showSnackBar(SnackBar(content: Text(ex.toString())));
     }
   }
 
@@ -69,7 +48,6 @@ class _LocationScreenState extends State<LocationScreen> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       Geolocator.requestPermission();
-      // return Future.error('Location services are disabled. Please enable.');
     }
 
     permission = await Geolocator.checkPermission();
@@ -88,9 +66,6 @@ class _LocationScreenState extends State<LocationScreen> {
     }
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.low);
-    // print(position);
-
-    //return await Geolocator.getCurrentPosition();
     return getAddressFromLatLang(position);
   }
 
@@ -117,25 +92,6 @@ class _LocationScreenState extends State<LocationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // ElevatedButton(
-            //     onPressed: () async {
-            //       try {
-            //         await determinePosition();
-            //       } catch (ex) {
-            //         var status = await Permission.location.status;
-            //         if (status.isDenied) {
-            //           openAppSettings();
-            //           //  ScaffoldMessenger.of(context)
-            //           //   .showSnackBar(SnackBar(content: Text(ex.toString())));
-            //         } else {
-            //           ScaffoldMessenger.of(context)
-            //               .showSnackBar(SnackBar(content: Text(ex.toString())));
-            //         }
-            //         // ScaffoldMessenger.of(context)
-            //         //     .showSnackBar(SnackBar(content: Text(ex.toString())));
-            //       }
-            //     },
-            // child: Text("getLocation"))
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -144,7 +100,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   color: AppColors.main,
                   size: 25,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 4,
                 ),
                 Text(
@@ -156,24 +112,9 @@ class _LocationScreenState extends State<LocationScreen> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            // TextField(
-            //   controller: latitude,
-            // ),
-            // SizedBox(
-            //   height: 6,
-            // ),
-            // TextField(
-            //   controller: longitude,
-            // ),
-            // SizedBox(
-            //   height: 6,
-            // ),
-            // TextField(
-            //   controller: address,
-            // ),
             PrimaryButton(
               text: "Enable Location",
               onPressed: () => getLocation(),
@@ -186,57 +127,14 @@ class _LocationScreenState extends State<LocationScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getLocation();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-    // streamSubscription.cancel();
   }
-
-  // getLocation() async {
-  //   bool serviceEnabled;
-
-  //   LocationPermission permission;
-  //   // Test if location services are enabled.
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     // Location services are not enabled don't continue
-  //     // accessing the position and request users of the
-  //     // App to enable the location services.
-  //     await Geolocator.openLocationSettings();
-  //     return Future.error('Location services are disabled.');
-  //   }
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       // Permissions are denied, next time you could try
-  //       // requesting permissions again (this is also where
-  //       // Android's shouldShowRequestPermissionRationale
-  //       // returned true. According to Android guidelines
-  //       // your App should show an explanatory UI now.
-  //       return Future.error('Location permissions are denied');
-  //     }
-  //   }
-  //   if (permission == LocationPermission.deniedForever) {
-  //     // Permissions are denied forever, handle appropriately.
-  //     return Future.error(
-  //         'Location permissions are permanently denied, we cannot request permissions.');
-  //   }
-  //   // When we reach here, permissions are granted and we can
-  //   // continue accessing the position of the device.
-  //   streamSubscription =
-  //       Geolocator.getPositionStream().listen((Position position) {
-  //     latitude.text = 'Latitude : ${position.latitude}';
-  //     longitude.text = 'Longitude : ${position.longitude}';
-  //     getAddressFromLatLang(position);
-  //   });
-  // }
 
   Future<void> getAddressFromLatLang(Position position) async {
     final provider = Provider.of<CscProvider>(context, listen: false);
@@ -254,14 +152,14 @@ class _LocationScreenState extends State<LocationScreen> {
     await preferences.setString('state', place.administrativeArea.toString());
     await preferences.setString('pincode', place.postalCode.toString());
     await preferences.setString('country', place.country.toString());
-    // provider.city = place.locality.toString().replaceAll('a', 'ā');
     provider.city = place.locality.toString();
     provider.state = place.administrativeArea.toString();
     provider.country = place.country.toString();
     if (place.toString() != '') {
       Navigator.pushAndRemoveUntil(
+          // ignore: use_build_context_synchronously
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false);
     }
   }

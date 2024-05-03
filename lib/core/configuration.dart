@@ -1,3 +1,5 @@
+/*This is the class of constant URLs*/
+
 class Configuration {
   static const String baseUrl = "http://selby.a2hosted.com/api";
   static const String imageUrl = "http://selby.a2hosted.com/";
@@ -7,21 +9,14 @@ class Configuration {
   static const String userAccountUrl = "/user/userAccount";
   static const String fetchAllCategoriesUrl = "/category";
   static const String createProductUrl = "/product/createProduct";
-  static const String fetchAllAutosUrl = "/product/allproduct";
+  static const String fetchAllProductsUrl = "/product/allproduct";
   static const String searchProductUrl = "/product/search";
-  static const String fetchAutosByIdUrl = "/autos/";
   static const String fetchUserByIdUrl = "/user/";
   static const String updateUserUrl = "/user/updateUser";
-  // static const String createPropertiesForSaleHousesApartmentsUrl =
-  //     "/product/properties/forSaleHousesApartments";
-  // static const String createPropertiesForRentHousesApartmentsUrl =
-  //     "/product/properties/forRentHousesApartments";
-  static const String fetchAllPropertiesUrl = "/product";
-  static const String fetchPropertiesByIdUrl = "/product/prod/";
+  static const String fetchProductByIdUrl = "/product/prod/";
   static const String fetchRoomByIdUrl = "/messages/getRoom/";
   static const String fetchProductByCategoryIdIdUrl =
       "/product/productByCatId/";
-
   static const String fetchAllProductByUserIdIdUrl =
       "/product/allProductByUserId/";
 }

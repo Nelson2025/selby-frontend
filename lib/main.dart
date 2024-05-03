@@ -3,15 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:selby/core/ui.dart';
 import 'package:selby/presentation/auth/login_screen.dart';
-import 'package:selby/presentation/auth/otp_screen.dart';
 import 'package:selby/presentation/screens/splash/splash_screen.dart';
-import 'package:selby/provider/auth_provider.dart';
-import 'package:selby/provider/autos_provider.dart';
+import 'package:selby/provider/users_provider.dart';
 import 'package:selby/provider/category_provider.dart';
 import 'package:selby/provider/csc_provider.dart';
 import 'package:selby/provider/msg_provider.dart';
-import 'package:selby/provider/properties_provider.dart';
-import 'package:selby/provider/user_provider.dart';
+import 'package:selby/provider/products_provider.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 
 void main() async {
@@ -25,7 +22,7 @@ void main() async {
             channelKey: 'basic_channel',
             channelName: 'Basic notifications',
             channelDescription: 'Notification channel for basic tests',
-            defaultColor: Color(0xFF9D50DD),
+            defaultColor: const Color(0xFF9D50DD),
             ledColor: Colors.white)
       ],
       // Channel groups are only visual and are not required
@@ -55,23 +52,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => UsersProvider()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
-        ChangeNotifierProvider(create: (_) => AutosProvider()),
-        ChangeNotifierProvider(create: (_) => PropertiesProvider()),
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => MessageProvider()),
         ChangeNotifierProvider(create: (_) => CscProvider()),
-        // ChangeNotifierProvider(create: (_) => OtpProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Selby',
         theme: Themes.defaultTheme,
         initialRoute: '/',
         routes: {
-          '/': (context) => SplashScreen(),
-          LoginScreen.routeName: (context) => LoginScreen(),
-          // OtpScreen.routeName: (context) => OtpScreen(),
+          '/': (context) => const SplashScreen(),
+          LoginScreen.routeName: (context) => const LoginScreen(),
         },
       ),
     );

@@ -1,14 +1,17 @@
+/* This is Add New Properties - For Rent: Shops & offices Screen*/
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:selby/core/configuration.dart';
 import 'package:selby/core/constants.dart';
 import 'package:selby/presentation/home/home_screen.dart';
-import 'package:selby/presentation/home/user_feed_screen.dart';
 import 'package:selby/presentation/notification_controller.dart';
 import 'package:selby/presentation/widgets/gap_widget.dart';
 import 'package:selby/presentation/widgets/primary_button.dart';
@@ -16,8 +19,8 @@ import 'package:selby/presentation/widgets/primary_dropdownbutton.dart';
 import 'package:selby/presentation/widgets/secondary_textfield.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:selby/services/preferences.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 class AddForRentShopsOfficesScreen extends StatefulWidget {
   final dynamic category;
@@ -50,26 +53,39 @@ class _AddForRentShopsOfficesScreenState
   void selectedMultipleImages() async {
     var imagePicker = ImagePicker();
 
-    // final List<XFile> selectedimage = await ImagePicker().pickMultiImage();
     List<XFile>? file = await imagePicker.pickMultiImage();
-    // if (selectedimage.isNotEmpty) {
-    //   setState(() {
-    //     selectedImages.addAll(selectedimage);
-    //   });
-    //   // for (XFile file in selectedimage) {
-    //   //   listImagePath.add(file.path);
-    //   // }
-    // }
-    // if (file != null) {
     for (XFile items in file) {
-      print(items);
-      images.add(File(items.path));
+      final bytes = await items.readAsBytes();
+      final kb = bytes.length / 1024;
+      final mb = kb / 1024;
+
+      if (kDebugMode) {
+        print('original image size:$mb');
+      }
+
+      final dir = await path_provider.getTemporaryDirectory();
+      final targetPath =
+          '${dir.absolute.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final result = await FlutterImageCompress.compressAndGetFile(
+        items.path,
+        targetPath,
+        quality: 70, // keep this high to get the original quality of image
+      );
+
+      final data = await result!.readAsBytes();
+      final newKb = data.length / 1024;
+      final newMb = newKb / 1024;
+
+      if (kDebugMode) {
+        print('compress image size:$newMb');
+      }
+
+      images.add(File(result.path));
     }
 
     setState(() {
       // images.addAll(file);
     });
-    // }
   }
 
   bool isLoading = false;
@@ -78,21 +94,14 @@ class _AddForRentShopsOfficesScreenState
   bool uploading = false, next = false;
   final ImagePicker picker = ImagePicker();
 
-  // String typeController = "";
-  // String bedroomsController = "";
-  // String bathroomsController = "";
   String furnishingController = "";
-  // String constuctionStatusController = "";
   String listedByController = "";
-  // String bachelorsController = "";
   String carParkingController = "";
-  // String facingController = "";
   final TextEditingController superBuiltupAreaController =
       TextEditingController();
   final TextEditingController carpetAreaController = TextEditingController();
   final TextEditingController maintenanceController = TextEditingController();
   final TextEditingController washroomsController = TextEditingController();
-  // final TextEditingController floorNoController = TextEditingController();
   final TextEditingController projectNameController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -126,7 +135,6 @@ class _AddForRentShopsOfficesScreenState
       onDismissActionReceivedMethod:
           NotificationController.onDismissActionReceivedMethod,
     );
-    // TODO: implement initState
     cityController.text = widget.city;
     stateController.text = widget.state;
     countryController.text = widget.country;
@@ -154,50 +162,6 @@ class _AddForRentShopsOfficesScreenState
                         style: const TextStyle(color: Colors.red),
                       )
                     : const SizedBox(),
-                // PrimaryDropdownButton(
-                //     label: "Type",
-                //     icon: const Icon(
-                //       Ionicons.add,
-                //       size: 18,
-                //     ),
-                //     dropdownValue: typeController,
-                //     brand: typeList1,
-                //     onChanged: (val) {
-                //       setState(() {
-                //         typeController = val!;
-                //       });
-                //     }),
-                // // Text(brandController),
-                // const GapWidget(),
-                // PrimaryDropdownButton(
-                //   label: "Bedrooms",
-                //   icon: const Icon(
-                //     Ionicons.add,
-                //     size: 18,
-                //   ),
-                //   dropdownValue: bedroomsController,
-                //   brand: bedroomsList,
-                //   onChanged: (val) {
-                //     setState(() {
-                //       bedroomsController = val!;
-                //     });
-                //   },
-                // ),
-                // const GapWidget(),
-                // PrimaryDropdownButton(
-                //   label: "Bathrooms",
-                //   icon: const Icon(
-                //     Ionicons.add,
-                //     size: 18,
-                //   ),
-                //   dropdownValue: bathroomsController,
-                //   brand: bathroomsList,
-                //   onChanged: (val) {
-                //     setState(() {
-                //       bathroomsController = val!;
-                //     });
-                //   },
-                // ),
                 const GapWidget(),
                 PrimaryDropdownButton(
                   label: "Furnishing",
@@ -213,21 +177,6 @@ class _AddForRentShopsOfficesScreenState
                     });
                   },
                 ),
-                // const GapWidget(),
-                // PrimaryDropdownButton(
-                //   label: "Construction Status",
-                //   icon: const Icon(
-                //     Ionicons.add,
-                //     size: 18,
-                //   ),
-                //   dropdownValue: constuctionStatusController,
-                //   brand: constructionStatusList,
-                //   onChanged: (val) {
-                //     setState(() {
-                //       constuctionStatusController = val!;
-                //     });
-                //   },
-                // ),
                 const GapWidget(),
                 PrimaryDropdownButton(
                   label: "Listed By",
@@ -243,7 +192,6 @@ class _AddForRentShopsOfficesScreenState
                     });
                   },
                 ),
-                // Text(modelController),
                 const GapWidget(),
                 SecondaryTextField(
                   validator: (value) {
@@ -261,7 +209,6 @@ class _AddForRentShopsOfficesScreenState
                   ),
                 ),
                 const GapWidget(),
-
                 SecondaryTextField(
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
@@ -277,21 +224,6 @@ class _AddForRentShopsOfficesScreenState
                     size: 18,
                   ),
                 ),
-                // const GapWidget(),
-                // PrimaryDropdownButton(
-                //   label: "Bachelors",
-                //   icon: const Icon(
-                //     Ionicons.add,
-                //     size: 18,
-                //   ),
-                //   dropdownValue: bachelorsController,
-                //   brand: bachelorsList,
-                //   onChanged: (val) {
-                //     setState(() {
-                //       furnishingController = val!;
-                //     });
-                //   },
-                // ),
                 const GapWidget(),
                 SecondaryTextField(
                   validator: (value) {
@@ -308,38 +240,6 @@ class _AddForRentShopsOfficesScreenState
                     size: 18,
                   ),
                 ),
-                // const GapWidget(),
-                // SecondaryTextField(
-                //   validator: (value) {
-                //     if (value == null || value.trim().isEmpty) {
-                //       return "Total Floors is Required";
-                //     }
-                //     return null;
-                //   },
-                //   controller: totalFloorsController,
-                //   labelText: "Total Floors",
-                //   icon: const Icon(
-                //     Ionicons.return_down_forward,
-                //     color: Colors.black,
-                //     size: 18,
-                //   ),
-                // ),
-                // const GapWidget(),
-                // SecondaryTextField(
-                //   validator: (value) {
-                //     if (value == null || value.trim().isEmpty) {
-                //       return "Floor No. is Required";
-                //     }
-                //     return null;
-                //   },
-                //   controller: floorNoController,
-                //   labelText: "Floor No.",
-                //   icon: const Icon(
-                //     Ionicons.return_down_forward,
-                //     color: Colors.black,
-                //     size: 18,
-                //   ),
-                // ),
                 const GapWidget(),
                 PrimaryDropdownButton(
                   label: "Car Parking",
@@ -355,21 +255,6 @@ class _AddForRentShopsOfficesScreenState
                     });
                   },
                 ),
-                // const GapWidget(),
-                // PrimaryDropdownButton(
-                //   label: "Facing",
-                //   icon: const Icon(
-                //     Ionicons.add,
-                //     size: 18,
-                //   ),
-                //   dropdownValue: facingController,
-                //   brand: facingList,
-                //   onChanged: (val) {
-                //     setState(() {
-                //       facingController = val!;
-                //     });
-                //   },
-                // ),
                 const GapWidget(),
                 SecondaryTextField(
                   validator: (value) {
@@ -402,87 +287,7 @@ class _AddForRentShopsOfficesScreenState
                     size: 18,
                   ),
                 ),
-                // const GapWidget(),
-                // Row(
-                //   children: [
-                //     Flexible(
-                //       child: SecondaryTextField(
-                //         controller: yearController,
-                //         labelText: "Year",
-                //         icon: const Icon(
-                //           Ionicons.return_down_forward,
-                //           color: Colors.black,
-                //           size: 18,
-                //         ),
-                //       ),
-                //     ),
-                //     const GapWidget(),
-                //     Flexible(
-                //       child: PrimaryDropdownButton(
-                //         label: "Owner",
-                //         icon: const Icon(
-                //           Ionicons.add,
-                //           size: 18,
-                //         ),
-                //         dropdownValue: ownerController,
-                //         brand: ownerList,
-                //         onChanged: (val) {
-                //           setState(() {
-                //             ownerController = val!;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // const GapWidget(),
-                // Row(
-                //   children: [
-                //     Flexible(
-                //       child: PrimaryDropdownButton(
-                //         label: "Fuel",
-                //         icon: const Icon(
-                //           Ionicons.add,
-                //           size: 18,
-                //         ),
-                //         dropdownValue: fuelController,
-                //         brand: fuelModelList,
-                //         onChanged: (val) {
-                //           setState(() {
-                //             fuelController = val!;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //     const GapWidget(),
-                //     Flexible(
-                //       child: SecondaryTextField(
-                //         controller: totalKmsController,
-                //         labelText: "Kms Driven",
-                //         icon: const Icon(
-                //           Ionicons.return_down_forward_outline,
-                //           color: Colors.black,
-                //           size: 18,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 const GapWidget(),
-                // PrimaryDropdownButton(
-                //   label: "Select Transmission",
-                //   icon: const Icon(
-                //     Ionicons.add,
-                //     size: 18,
-                //   ),
-                //   dropdownValue: transmissionController,
-                //   brand: transmissionModelList,
-                //   onChanged: (val) {
-                //     setState(() {
-                //       transmissionController = val!;
-                //     });
-                //   },
-                // ),
                 const GapWidget(),
                 SizedBox(
                   child: SecondaryTextField(
@@ -501,7 +306,7 @@ class _AddForRentShopsOfficesScreenState
                     ),
                   ),
                 ),
-                GapWidget(),
+                const GapWidget(),
                 SizedBox(
                   height: 130,
                   child: TextFormField(
@@ -518,20 +323,20 @@ class _AddForRentShopsOfficesScreenState
                     keyboardType: TextInputType.multiline,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(top: 30, bottom: 2),
+                      contentPadding: const EdgeInsets.only(top: 30, bottom: 2),
                       labelText: 'Describe what are you selling',
                       alignLabelWithHint: true,
                       hintText: 'Describe what are you selling',
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         color: Colors.grey,
                         fontSize: 14.0,
                       ),
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         color: Colors.black,
                         fontSize: 14.0,
                         fontWeight: FontWeight.w400,
                       ),
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Ionicons.return_down_forward_outline,
                         color: Colors.black,
                         size: 18,
@@ -541,12 +346,13 @@ class _AddForRentShopsOfficesScreenState
                             BorderSide(color: Colors.grey.shade200, width: 2),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      floatingLabelStyle: TextStyle(
+                      floatingLabelStyle: const TextStyle(
                         color: Colors.black,
                         fontSize: 18.0,
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 1.5),
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 1.5),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
@@ -576,11 +382,6 @@ class _AddForRentShopsOfficesScreenState
                     controller: cityController,
                     labelText: "City",
                     readOnly: true,
-                    // icon: const Icon(
-                    //   Ionicons.return_down_forward_outline,
-                    //   color: Colors.black,
-                    //   size: 18,
-                    // ),
                   ),
                 ),
                 const GapWidget(),
@@ -589,11 +390,6 @@ class _AddForRentShopsOfficesScreenState
                     controller: stateController,
                     labelText: "State",
                     readOnly: true,
-                    // icon: const Icon(
-                    //   Ionicons.return_down_forward_outline,
-                    //   color: Colors.black,
-                    //   size: 18,
-                    // ),
                   ),
                 ),
                 const GapWidget(),
@@ -602,61 +398,54 @@ class _AddForRentShopsOfficesScreenState
                     controller: countryController,
                     labelText: "Country",
                     readOnly: true,
-                    // icon: const Icon(
-                    //   Ionicons.return_down_forward_outline,
-                    //   color: Colors.black,
-                    //   size: 18,
-                    // ),
                   ),
                 ),
                 const GapWidget(),
                 next
-                    ? SingleChildScrollView()
+                    ? const SingleChildScrollView()
                     : Stack(children: [
-                        Container(
-                          child: GridView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: images.length + 1,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisSpacing: 4, crossAxisCount: 3),
-                              itemBuilder: (context, index) {
-                                return index == 0
-                                    ? Container(
-                                        color: Colors.grey.shade200,
-                                        child: Center(
-                                            child: IconButton(
-                                          icon: const Icon(Ionicons.add),
-                                          onPressed: () {
-                                            !uploading
-                                                ? selectedMultipleImages()
-                                                : null;
-                                          },
-                                        )),
-                                      )
-                                    : InkWell(
-                                        onDoubleTap: () {
-                                          setState(() {
-                                            images.removeAt(index - 1);
-                                          });
+                        GridView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: images.length + 1,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisSpacing: 4, crossAxisCount: 3),
+                            itemBuilder: (context, index) {
+                              return index == 0
+                                  ? Container(
+                                      color: Colors.grey.shade200,
+                                      child: Center(
+                                          child: IconButton(
+                                        icon: const Icon(Ionicons.add),
+                                        onPressed: () {
+                                          !uploading
+                                              ? selectedMultipleImages()
+                                              : null;
                                         },
-                                        child: Image.file(
-                                          (images[index - 1]),
-                                          height: 50,
-                                        ),
-                                      );
-                              }),
-                        ),
+                                      )),
+                                    )
+                                  : InkWell(
+                                      onDoubleTap: () {
+                                        setState(() {
+                                          images.removeAt(index - 1);
+                                        });
+                                      },
+                                      child: Image.file(
+                                        (images[index - 1]),
+                                        height: 50,
+                                      ),
+                                    );
+                            }),
                       ]),
-                GapWidget(),
-                Text(
+                const GapWidget(),
+                const Text(
                   "Double tap to remove photos",
                   style: TextStyle(fontSize: 12),
                 ),
-                GapWidget(),
+                const GapWidget(),
                 isLoading == true
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : PrimaryButton(
                         text: "Submit",
                         onPressed: () {
@@ -664,8 +453,6 @@ class _AddForRentShopsOfficesScreenState
                             isLoading = true;
                           });
                           _submit(context);
-                          //createAutos();
-                          //createAutos(widget.category.sId);
                         },
                       ),
               ],
@@ -693,26 +480,19 @@ class _AddForRentShopsOfficesScreenState
     formKey.currentState!.save();
 
     final userDetails = await Preferences.fetchUserDetails();
-    String? phone = userDetails['phone'];
     String? userId = userDetails['userId'];
     FormData formData = FormData.fromMap({
       'categoryId': widget.category.sId,
       'subcategoryId': widget.subcategory,
       'userId': userId,
       'features': {
-        // 'type': typeController.trim(),
-        // 'bedrooms': bedroomsController.trim(),
-        // 'bathrooms': bathroomsController.trim(),
         'furnishing': furnishingController.trim(),
-        // 'constructionStatus': constuctionStatusController.trim(),
         'listedBy': listedByController.trim(),
-        // 'bachelors': bachelorsController.trim(),
         'superBuiltupArea': superBuiltupAreaController.text.trim(),
         'carpetArea': carpetAreaController.text.trim(),
         'maintenanceMonthly': maintenanceController.text.trim(),
         'washrooms': washroomsController.text.trim(),
         'carParking': carParkingController.trim(),
-        // 'facing': facingController.trim(),
         'projectName': projectNameController.text.trim(),
       },
       'title': titleController.text.trim(),
@@ -736,7 +516,6 @@ class _AddForRentShopsOfficesScreenState
     Dio dio = Dio();
     Response response;
     try {
-      print("hello");
       response = await dio.post(
         '${Configuration.baseUrl}${Configuration.createProductUrl}',
         options: Options(headers: {
@@ -748,7 +527,6 @@ class _AddForRentShopsOfficesScreenState
 
       if (response.statusCode == 200) {
         if (response.data['success'] == true) {
-          print(response.data['message']);
           if (!mounted) return;
           if (userId == notificationUserId) {
             AwesomeNotifications().createNotification(
@@ -763,90 +541,21 @@ class _AddForRentShopsOfficesScreenState
             isLoading = false;
           });
           Navigator.pushAndRemoveUntil(
+              // ignore: use_build_context_synchronously
               context,
               MaterialPageRoute(builder: (context) => const HomeScreen()),
               (route) => false);
         } else {
-          print(response.data['message']);
           setState(() {
             isLoading = false;
           });
         }
       }
     } catch (ex) {
-      print(ex.toString());
+      log(ex.toString());
       setState(() {
         isLoading = false;
       });
     }
-
-////////////////////////////
-    //   var url = Uri.parse('${Config.baseUrl}${Config.createAutosUrl}');
-
-    //   var request = http.MultipartRequest('POST', url);
-    //   request.fields['categoryId'] = widget.category.sId;
-    //   request.fields['userId'] = "${userId}";
-    //   request.fields['title'] = titleController.text.trim();
-    //   request.fields['price'] = priceController.text.trim();
-    //   for (var file in images) {
-    //     request.files.add(await http.MultipartFile.fromPath('img', file.path,
-    //         filename: file.path.split("/").last));
-    //     // request.files.add(http.MultipartFile.fromBytes(
-    //     //     'img[]', await File.fromUri(Uri.parse(file)).readAsBytes()));
-    //   }
-    //   request.headers.addAll({
-    //     "Content-Type": "multipart/form-data",
-    //   });
-    //   var response = await request.send();
   }
-  /////////////////////////////////
-
-  // Future createAutos() async {
-  //   // Map<String, String> requestHeaders = {
-  //   //   'Content-Type': 'multipart/form-data'
-  //   // };
-  //   var client = http.Client();
-
-  //   final userDetails = await Preferences.fetchUserDetails();
-  //   String? phone = userDetails['phone'];
-  //   String? userId = userDetails['userId'];
-  //   List<String> images = [];
-  //   // print(userId);
-  //   // print(phone);
-  //   var url = Uri.parse('${Config.baseUrl}${Config.createAutosUrl}');
-
-  //   var request = http.MultipartRequest('POST', url);
-  //   request.fields['categoryId'] = widget.category.sId;
-  //   request.fields['userId'] = "${userId}";
-  //   request.fields['title'] = titleController.text.trim();
-  //   request.fields['price'] = priceController.text.trim();
-  //   //var pic = await http.MultipartFile.fromPath("image", selectedImages.path);
-  //   // for (final imageFiles in selectedImages) {
-  //   //   uploadList.add(await http.MultipartFile.fromPath(
-  //   //     "image",
-  //   //     imageFiles.path,
-  //   //   ));
-  //   // }
-  //   // request.files.addAll(uploadList);
-
-  //   for (var file in selectedImages) {}
-  //   var response = await request.send();
-  //   // var response = await client.post(
-  //   //   url,
-  //   //   headers: requestHeaders,
-  //   //   body: jsonEncode(
-  //   //     {
-  //   //       "userId": userId,
-  //   //       "categoryId": widget.category.sId,
-  //   //       "title": titleController.text.trim(),
-  //   //       "price": priceController.text.trim(),
-  //   //     },
-  //   //   ),
-  //   // );
-
-  //   // print(jsonDecode(response.body));
-
-  //   // if (jsonDecode(response.body)['success'] == true) {}
-  //   // return autosModel(response.body);
-  // }
 }

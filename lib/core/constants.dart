@@ -1,3 +1,5 @@
+/*These are the lists of dropdown menus of several forms when adding new items*/
+
 final List carBrandList = ['Maruti Suzuki', 'Mahindra', 'Tata'];
 
 final List carModelList = ['Baleno', 'Thar', 'Punch', 'Bolero'];

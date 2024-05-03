@@ -1,3 +1,4 @@
+/* This is Primary TextField Widget*/
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:selby/core/ui.dart';
@@ -31,7 +32,6 @@ class PrimaryTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       inputFormatters: [LengthLimitingTextInputFormatter(maxLength)],
-
       textAlignVertical: TextAlignVertical.center,
       controller: controller,
       keyboardType: keyboardType,
@@ -39,11 +39,7 @@ class PrimaryTextField extends StatelessWidget {
       validator: validator,
       initialValue: initialValue,
       onChanged: onChanged,
-      // style: TextStyle(color: AppColors.main),
       decoration: InputDecoration(
-        // labelStyle: TextStyle(color: AppColors.main),
-        // hintStyle: TextStyle(color: AppColors.main),
-        // fillColor: AppColors.main,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -55,7 +51,6 @@ class PrimaryTextField extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(vertical: 14),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          // borderSide: BorderSide(color: AppColors.main),
         ),
         labelText: labelText,
         prefixIcon: icon,

@@ -1,3 +1,4 @@
+/* This is user services*/
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:selby/core/configuration.dart';
 import 'package:selby/models/user_model.dart';
-import 'package:selby/provider/auth_provider.dart';
+import 'package:selby/provider/users_provider.dart';
 
 class AuthService {
   Dio dio = Dio();
@@ -13,13 +14,11 @@ class AuthService {
   Future<List<UserModel>> getAllUser(
       {required String userid, required BuildContext context}) async {
     List<UserModel> users = [];
-    // log(userid.toString() + 'GGGGGGGGGGGGGGG');
 
     return await dio
-        .get(Configuration.baseUrl + "/api/user/getAllUsers")
+        .get("${Configuration.baseUrl}/api/user/getAllUsers")
         .then((value) {
       var list = value.data as List;
-      print(list);
       for (var element in list) {
         UserModel userModel = UserModel.fromJson(element);
 
@@ -27,9 +26,8 @@ class AuthService {
       }
       return users;
     }).catchError((e) {
-      Provider.of<AuthProvider>(context, listen: false).isLoading = false;
+      Provider.of<UsersProvider>(context, listen: false).isLoading = false;
       log(e.toString());
-      //  throw Exception('error');
     });
   }
 }

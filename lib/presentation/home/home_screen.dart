@@ -1,3 +1,4 @@
+/*This is the Home Screen*/
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import 'package:selby/presentation/category/select_category_screen.dart';
 import 'package:selby/presentation/country_state_city/csc_screen.dart';
 import 'package:selby/presentation/home/chat_screen.dart';
 import 'package:selby/presentation/home/posts_screen.dart';
+
 import 'package:selby/presentation/home/profile_screen.dart';
 import 'package:selby/presentation/home/search_screen.dart';
 import 'package:selby/presentation/home/user_feed_screen.dart';
@@ -65,13 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: AppColors.white,
               ),
             ),
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: Icon(
-            //     Ionicons.search_outline,
-            //     color: AppColors.white,
-            //   ),
-            // ),
           ],
           bottom: PreferredSize(
               preferredSize:
@@ -175,12 +170,6 @@ class _HomeScreenState extends State<HomeScreen> {
         alignment: const Alignment(0, 0.89),
         child: Container(
           decoration: BoxDecoration(
-            // gradient: LinearGradient(
-            //   colors: [
-            //     AppColors.main,
-            //     AppColors.main.withOpacity(0.2),
-            //   ],
-            // ),
             color: AppColors.main,
             shape: BoxShape.circle,
           ),

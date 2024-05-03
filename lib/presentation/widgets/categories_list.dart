@@ -1,12 +1,9 @@
+/* This is Categories Widget*/
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:selby/core/configuration.dart';
-import 'package:selby/core/ui.dart';
 import 'package:selby/models/category_model.dart';
-import 'package:selby/presentation/category/select_subcategories.dart';
 import 'package:selby/presentation/product/productList.dart';
 import 'package:selby/presentation/product/productSubCategory.dart';
 import 'package:selby/provider/category_provider.dart';
@@ -23,25 +20,14 @@ class CategoriesList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 10),
-          //   child: Container(
-          //     height: 135,
-          //     width: double.infinity,
-          //     child: Stories(),
-          //   ),
-          // ),
-          // Divider(
-          //   color: Colors.black12,
-          // ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -52,27 +38,10 @@ class CategoriesList extends StatelessWidget {
                       color: Colors.black12,
                       fontWeight: FontWeight.w900),
                 ),
-                // Row(
-                //   children: <Widget>[
-                //     Icon(
-                //       Ionicons.eye_outline,
-                //       color: AppColors.main,
-                //       size: 18,
-                //     ),
-                //     SizedBox(
-                //       width: 5,
-                //     ),
-                //     Text("See All",
-                //         style: TextStyle(
-                //             fontWeight: FontWeight.w500,
-                //             fontSize: 12,
-                //             color: AppColors.main))
-                //   ],
-                // )
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           SizedBox(
@@ -81,7 +50,7 @@ class CategoriesList extends StatelessWidget {
                 future: provider.fetchAllCategories(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
@@ -145,7 +114,7 @@ class CategoryCard extends StatelessWidget {
     return OutlinedButton(
       onPressed: press,
       style: OutlinedButton.styleFrom(
-        side: BorderSide(color: Colors.transparent),
+        side: const BorderSide(color: Colors.transparent),
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(defaultBorderRadius)),

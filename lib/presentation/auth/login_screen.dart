@@ -1,6 +1,6 @@
+/*This is the Login Screen*/
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
 import 'package:selby/api_services/otpApi.dart';
 import 'package:selby/core/ui.dart';
 import 'package:selby/presentation/auth/otp_screen.dart';
@@ -8,12 +8,10 @@ import 'package:selby/presentation/widgets/gap_widget.dart';
 import 'package:selby/presentation/widgets/logo_widget.dart';
 import 'package:selby/presentation/widgets/primary_button.dart';
 import 'package:selby/presentation/widgets/primary_textfield.dart';
-import 'package:selby/provider/auth_provider.dart';
-import 'package:selby/services/auth_services.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = 'login';
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -145,14 +143,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         }
                       });
-                      // createOtp();
-                      // provider.createOtp(phone: phoneController.text.trim());
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //             OtpScreen(phone: phoneController.text)));
-                      // provider.logIn();
                     },
                   ),
                 ),

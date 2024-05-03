@@ -1,10 +1,9 @@
+/* This is Splash Screen*/
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:selby/api_services/userApi.dart';
 import 'package:selby/core/ui.dart';
 import 'package:selby/presentation/auth/login_screen.dart';
-import 'package:selby/presentation/home/home_screen.dart';
 import 'package:selby/presentation/location/location_screen.dart';
 import 'package:selby/presentation/widgets/gap_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,31 +22,19 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(milliseconds: 2000), () async {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       final phone = preferences.getString('phone');
-      print(phone);
-      // UserApi.userAccount(phone!);
-      // if (phone != null) {
-      //   UserApi.userAccount(phone!).then((res) {
-      //     if (res.success == true) {
-      //       Navigator.pushAndRemoveUntil(
-      //           context,
-      //           MaterialPageRoute(builder: (context) => HomeScreen()),
-      //           (route) => false);
-      //     }
-      //   });
-      // } else {
       if (phone != null) {
         Navigator.pushAndRemoveUntil(
+            // ignore: use_build_context_synchronously
             context,
-            MaterialPageRoute(builder: (context) => LocationScreen()),
+            MaterialPageRoute(builder: (context) => const LocationScreen()),
             (route) => false);
       } else {
         Navigator.pushAndRemoveUntil(
+            // ignore: use_build_context_synchronously
             context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
             (route) => false);
       }
-
-      // }
     });
   }
 

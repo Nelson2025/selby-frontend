@@ -1,7 +1,8 @@
+/*This is the Select Subcategory Screen*/
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:selby/core/ui.dart';
-import 'package:selby/presentation/product/add_for_sale_houses_apartments_screen.dart';
+import 'package:selby/presentation/product/properties/add_for_sale_houses_apartments_screen.dart';
 import 'package:selby/presentation/product/electronics/add_for_electronics.dart';
 import 'package:selby/presentation/product/mobiles/add_for_accessories.dart';
 import 'package:selby/presentation/product/mobiles/add_for_mobile_phones.dart';
@@ -14,7 +15,6 @@ import 'package:selby/presentation/product/properties/add_for_land_plots.dart';
 import 'package:selby/presentation/product/properties/add_for_pg_guesthouses.dart';
 import 'package:selby/presentation/product/properties/add_for_rent_houses_Apartments.dart';
 import 'package:selby/presentation/product/properties/add_for_rent_shops_offices.dart';
-import 'package:selby/presentation/widgets/gap_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectSubcategories extends StatefulWidget {
@@ -58,8 +58,6 @@ class _SelectSubcategoriesState extends State<SelectSubcategories> {
       ),
       body: Container(
           child: ListView.builder(
-        // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        //     crossAxisCount: 2, mainAxisSpacing: 0, crossAxisSpacing: 0),
         itemCount: widget.category.subcategories.length,
         itemBuilder: (context, index) {
           return ListTile(
@@ -257,9 +255,8 @@ class _SelectSubcategoriesState extends State<SelectSubcategories> {
               "${widget.category.subcategories[index]}",
               style: TextStyle(color: AppColors.main, fontSize: 14),
             ),
-            trailing: Icon(Ionicons.arrow_forward_circle),
+            trailing: const Icon(Ionicons.arrow_forward_circle),
           );
-          // final category = provider.categories[index];
         },
       )),
     );

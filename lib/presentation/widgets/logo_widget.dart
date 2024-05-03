@@ -1,3 +1,4 @@
+/* This is Logo Widget*/
 import 'package:flutter/material.dart';
 
 class LogoWidget extends StatelessWidget {

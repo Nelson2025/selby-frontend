@@ -1,3 +1,4 @@
+/*This is the OTP Screen*/
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -12,8 +13,6 @@ import 'package:selby/presentation/widgets/link_button.dart';
 import 'package:selby/presentation/widgets/logo_widget.dart';
 import 'package:selby/presentation/widgets/primary_button.dart';
 import 'package:selby/presentation/widgets/primary_textfield.dart';
-
-import 'package:selby/provider/otp_provider.dart';
 
 class OtpScreen extends StatefulWidget {
   static const routeName = 'otp';
@@ -152,7 +151,6 @@ class _OtpScreenState extends State<OtpScreen> {
                       OtpApi.verifyOtp(
                               widget.phone, widget.hash, otpController.text)
                           .then((response) async {
-                        // print(response.success);
                         if (response.success == true &&
                             response.message == 'Success') {
                           UserApi.userAccount(response.phone!).then((res) {
@@ -167,7 +165,6 @@ class _OtpScreenState extends State<OtpScreen> {
                           });
                         }
                       });
-                      // provider.verifyOtp(userModel.phone!, userModel.fullHash!);
                     },
                   ),
                 ),

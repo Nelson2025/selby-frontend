@@ -1,11 +1,11 @@
+/*This is the My Ads Screen*/
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:selby/core/configuration.dart';
-import 'package:selby/core/ui.dart';
 import 'package:selby/models/product_model.dart';
-import 'package:selby/presentation/product/autos_details_screen.dart';
-import 'package:selby/provider/autos_provider.dart';
+import 'package:selby/presentation/product/product_details_screen.dart';
+import 'package:selby/provider/products_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PostsScreen extends StatefulWidget {
@@ -33,40 +33,7 @@ class _PostsScreenState extends State<PostsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AutosProvider>(context, listen: false);
-    // provider.fetchAllAutos();
-    // return Scaffold(
-    // appBar: AppBar(
-    //   backgroundColor: AppColors.main,
-    //   iconTheme: IconThemeData(
-    //     color: Colors.white, //change your color here
-    //   ),
-    //   title: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Image.asset(
-    //         'assets/images/selby_logo.png',
-    //         width: 100,
-    //       )
-    //     ],
-    //   ),
-    //   actions: [
-    //     IconButton(
-    //       onPressed: () {},
-    //       icon: Icon(
-    //         Ionicons.notifications_outline,
-    //         color: AppColors.white,
-    //       ),
-    //     ),
-    //     // IconButton(
-    //     //   onPressed: () {},
-    //     //   icon: Icon(
-    //     //     Ionicons.search_outline,
-    //     //     color: AppColors.white,
-    //     //   ),
-    //     // ),
-    //   ],
-    // ),
+    final provider = Provider.of<ProductProvider>(context, listen: false);
     return SingleChildScrollView(
       child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
@@ -74,7 +41,7 @@ class _PostsScreenState extends State<PostsScreen> {
               future: provider.fetchAllProductByUserId(userId.toString()),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else {
@@ -93,24 +60,12 @@ class _PostsScreenState extends State<PostsScreen> {
                     itemBuilder: (_, index) {
                       return GestureDetector(
                         onTap: () => {
-                          // if (cdata[index].title == 'Autos')
-                          //   {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AutosDetailsScreen(
+                                  builder: (context) => ProductDetailsScreen(
                                         autosId: cdata[index].sId!,
                                       )))
-                          //   }
-                          // else
-                          //   {
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) => AutosDetailsScreen(
-                          //                   autosId: cdata[index].sId!,
-                          //                 )))
-                          //   }
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -127,11 +82,10 @@ class _PostsScreenState extends State<PostsScreen> {
                                     width: MediaQuery.of(context).size.width,
                                     height:
                                         MediaQuery.of(context).size.width * 0.4,
-                                    // alignment: Alignment.center,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.black12,
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(12)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(12)),
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(12),
@@ -141,36 +95,6 @@ class _PostsScreenState extends State<PostsScreen> {
                                       ),
                                     ),
                                   ),
-                                  // Padding(
-                                  //   padding: const EdgeInsets.symmetric(
-                                  //       vertical: 1, horizontal: 8),
-                                  //   child: Align(
-                                  //     alignment: Alignment.topRight,
-                                  //     child: Container(
-                                  //       width:
-                                  //           MediaQuery.of(context).size.width *
-                                  //               0.1,
-                                  //       height:
-                                  //           MediaQuery.of(context).size.height *
-                                  //               0.06,
-                                  //       decoration: BoxDecoration(
-                                  //         color: Colors.white,
-                                  //         shape: BoxShape.circle,
-                                  //         boxShadow: [
-                                  //           BoxShadow(
-                                  //             offset: Offset(2, 2),
-                                  //             color: Colors.grey,
-                                  //             blurRadius: 5,
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //       child: Icon(
-                                  //         Ionicons.heart_outline,
-                                  //         color: AppColors.main,
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
                                 ],
                               ),
                               // const SizedBox(height: 10),
@@ -186,7 +110,7 @@ class _PostsScreenState extends State<PostsScreen> {
                                         padding: const EdgeInsets.all(3.0),
                                         child: Text(
                                           "${cdata[index].categoryId['title']}",
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 10),
                                         ),
@@ -212,7 +136,7 @@ class _PostsScreenState extends State<PostsScreen> {
                                     const SizedBox(width: 10),
                                     Text(
                                       "₹${cdata[index].price}",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w700),
                                     ),
@@ -226,7 +150,7 @@ class _PostsScreenState extends State<PostsScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Ionicons.location_outline,
                                       size: 13,
                                     ),

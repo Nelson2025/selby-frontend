@@ -1,3 +1,5 @@
+/*These are the UI constant values like color, fonts etc.*/
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

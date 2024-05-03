@@ -1,23 +1,18 @@
+/*This is the Search Screen*/
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
-
 import 'package:selby/core/configuration.dart';
 import 'package:selby/core/ui.dart';
-import 'package:selby/models/autos_model.dart';
 import 'package:selby/models/product_model.dart';
-import 'package:selby/presentation/product/autos_details_screen.dart';
-import 'package:selby/presentation/widgets/categories_list.dart';
+import 'package:selby/presentation/product/product_details_screen.dart';
 import 'package:selby/presentation/widgets/gap_widget.dart';
-import 'package:selby/presentation/widgets/stories_widget.dart';
-import 'package:selby/provider/autos_provider.dart';
-import 'package:selby/provider/category_provider.dart';
 
 class SearchScreen extends StatefulWidget {
   final String searchText;
@@ -49,7 +44,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getProducts();
     scrollController.addListener(loadMoreData);
@@ -57,12 +51,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final provider = Provider.of<AutosProvider>(context, listen: false);
-    // provider.fetchAllAutos();
-
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
         ),
         backgroundColor: AppColors.main,
@@ -73,7 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
               'assets/images/selby_logo.png',
               width: 100,
             ),
-            Text(
+            const Text(
               'Search Result',
               style: TextStyle(
                   color: Colors.white,
@@ -91,7 +82,7 @@ class _SearchScreenState extends State<SearchScreen> {
             controller: scrollController,
             children: [
               products.isEmpty
-                  ? Container(
+                  ? SizedBox(
                       height: MediaQuery.sizeOf(context).height * 0.85,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -108,20 +99,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     )
                   : Padding(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
-                      child:
-                          // FutureBuilder(
-                          //     future: provider.fetchAllAutos(),
-                          //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                          //       if (!snapshot.hasData) {
-                          //         return Center(
-                          //           child: CircularProgressIndicator(),
-                          //         );
-                          //       } else {
-                          //         List<AutosModel> cdata = snapshot.data;
-
-                          //         return
-
-                          GridView.builder(
+                      child: GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -138,7 +116,8 @@ class _SearchScreenState extends State<SearchScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AutosDetailsScreen(
+                                      builder: (context) =>
+                                          ProductDetailsScreen(
                                             autosId: products[index].sId!,
                                           )))
                             },
@@ -160,10 +139,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                         height:
                                             MediaQuery.of(context).size.width *
                                                 0.4,
-                                        // alignment: Alignment.center,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: Colors.black12,
-                                          borderRadius: const BorderRadius.all(
+                                          borderRadius: BorderRadius.all(
                                               Radius.circular(12)),
                                         ),
                                         child: ClipRRect(
@@ -189,38 +167,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                           ),
                                         ),
                                       ),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.symmetric(
-                                      //       vertical: 1, horizontal: 8),
-                                      //   child: Align(
-                                      //     alignment: Alignment.topRight,
-                                      //     child: Container(
-                                      //       width: MediaQuery.of(context).size.width *
-                                      //           0.1,
-                                      //       height:
-                                      //           MediaQuery.of(context).size.height *
-                                      //               0.06,
-                                      //       decoration: BoxDecoration(
-                                      //         color: Colors.white,
-                                      //         shape: BoxShape.circle,
-                                      //         boxShadow: [
-                                      //           BoxShadow(
-                                      //             offset: Offset(2, 2),
-                                      //             color: Colors.grey,
-                                      //             blurRadius: 5,
-                                      //           ),
-                                      //         ],
-                                      //       ),
-                                      //       child: Icon(
-                                      //         Ionicons.heart_outline,
-                                      //         color: AppColors.main,
-                                      //       ),
-                                      //     ),
-                                      //   ),
-                                      // ),
                                     ],
                                   ),
-                                  // const SizedBox(height: 10),
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -261,7 +209,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         const SizedBox(width: 10),
                                         Text(
                                           "₹${products[index].price}",
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w700),
                                         ),
@@ -277,7 +225,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Ionicons.location_outline,
                                           size: 13,
                                         ),
@@ -308,8 +256,6 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
-  //           }));
-  // }
 
   void loadMoreData() {
     if (scrollController.position.pixels ==
@@ -329,12 +275,9 @@ class _SearchScreenState extends State<SearchScreen> {
         Uri.parse(
             '${Configuration.baseUrl}${Configuration.searchProductUrl}/$limit/${products.length}/${widget.searchText}'),
       );
-      // print(response.body);
 
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
-        // print(result);
-        //print(result['totalRecords']);
         result['data']?.forEach((value) => {
               products.add(
                 ProductModel(
@@ -358,10 +301,9 @@ class _SearchScreenState extends State<SearchScreen> {
           totalProducts = result['totalRecords'];
           products;
         });
-        //return autos;
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 }

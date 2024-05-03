@@ -1,8 +1,7 @@
+/*This is the Profile Screen*/
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:dio/dio.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:selby/core/configuration.dart';
@@ -13,7 +12,7 @@ import 'package:selby/presentation/home/home_screen.dart';
 import 'package:selby/presentation/notification_controller.dart';
 import 'package:selby/presentation/widgets/gap_widget.dart';
 import 'package:selby/presentation/widgets/secondary_textfield.dart';
-import 'package:selby/provider/auth_provider.dart';
+import 'package:selby/provider/users_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -61,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AuthProvider>(context, listen: false);
+    final provider = Provider.of<UsersProvider>(context, listen: false);
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -70,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             future: provider.fetchUsersById(userId.toString()),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else {
@@ -85,47 +84,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // SizedBox(
-                      //   child: SecondaryTextField(
-                      //     controller: nameController,
-                      //     validator: (value) {
-                      //       if (value == null || value.trim().isEmpty) {
-                      //         return "Name is Required";
-                      //       }
-                      //       return null;
-                      //     },
-                      //     labelText: "Enter your name",
-                      //     icon: const Icon(
-                      //       Ionicons.return_down_forward_outline,
-                      //       color: Colors.black,
-                      //       size: 18,
-                      //     ),
-                      //   ),
-                      // ),
-                      // GapWidget(),
-                      // SizedBox(
-                      //   child: SecondaryTextField(
-                      //     labelText: "${cdata?[0].phone}",
-                      //     icon: const Icon(
-                      //       Ionicons.return_down_forward_outline,
-                      //       color: Colors.black,
-                      //       size: 18,
-                      //     ),
-                      //   ),
-                      // ),
-                      // ElevatedButton(
-                      //   onPressed: () async {
-                      //     SharedPreferences preferences =
-                      //         await SharedPreferences.getInstance();
-                      //     await preferences.clear();
-                      //     Navigator.pushAndRemoveUntil(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //             builder: (context) => LoginScreen()),
-                      //         (route) => false);
-                      //   },
-                      //   child: Text('Sign Out'),
-                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -137,10 +95,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               fontSize: 16,
                             ),
                           ),
-                          GapWidget(),
+                          const GapWidget(),
                           Text(
                             "Mobile : +91-******${cdata?[0].phone?.substring(6)}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black38,
                               fontSize: 16.0,
                             ),
@@ -156,7 +114,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(
-                                // width: MediaQuery.sizeOf(context).width * 0.6,
                                 child: SecondaryTextField(
                                   controller: nameController,
                                   validator: (value) {
@@ -173,9 +130,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                              GapWidget(),
+                              const GapWidget(),
                               SizedBox(
-                                // width: MediaQuery.sizeOf(context).width * 0.6,
                                 child: SecondaryTextField(
                                   controller: emailController,
                                   validator: (value) {
@@ -192,11 +148,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10.0,
                               ),
                               isLoading == true
-                                  ? SizedBox(
+                                  ? const SizedBox(
                                       height: 20,
                                       width: 20,
                                       child: CircularProgressIndicator())
@@ -205,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: AppColors.main),
-                                        child: Text(
+                                        child: const Text(
                                           "Update",
                                           style: TextStyle(color: Colors.white),
                                         ),
@@ -219,34 +175,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                             ],
                           )),
-
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      // MenuItems(
-                      //     icon: Ionicons.lock_closed_outline,
-                      //     text: "Privacy",
-                      //     ontap: () {}),
-                      // MenuItems(
-                      //     icon: Ionicons.shield_checkmark_outline,
-                      //     text: "Security",
-                      //     ontap: () {}),
-                      // MenuItems(
-                      //     icon: Ionicons.notifications_outline,
-                      //     text: "Notification",
-                      //     ontap: () {}),
-                      // MenuItems(
-                      //     icon: Ionicons.document_lock_outline,
-                      //     text: "Data Privacy",
-                      //     ontap: () {}),
-                      // MenuItems(
-                      //     icon: Ionicons.language_outline,
-                      //     text: "Language",
-                      //     ontap: () {}),
-                      // MenuItems(
-                      //     icon: Ionicons.server_outline,
-                      //     text: "Storage Settings",
-                      //     ontap: () {}),
                       const Divider(
                         thickness: 0.5,
                         color: Colors.black12,
@@ -270,16 +201,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               await SharedPreferences.getInstance();
                           await preferences.clear();
                           Navigator.pushAndRemoveUntil(
+                              // ignore: use_build_context_synchronously
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
+                                  builder: (context) => const LoginScreen()),
                               (route) => false);
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Center(
+                      const Center(
                         child: Text(
                           "version: 1.0",
                           style: TextStyle(color: Colors.black12),
@@ -291,26 +223,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
             }),
       ),
-      // Column(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     Text("${phone}"),
-      //     Center(
-      //       child: ElevatedButton(
-      //         onPressed: () async {
-      //           SharedPreferences preferences =
-      //               await SharedPreferences.getInstance();
-      //           await preferences.clear();
-      //           Navigator.pushAndRemoveUntil(
-      //               context,
-      //               MaterialPageRoute(builder: (context) => LoginScreen()),
-      //               (route) => false);
-      //         },
-      //         child: Text('Sign Out'),
-      //       ),
-      //     ),
-      //   ],
-      // ),
     );
   }
 
@@ -325,15 +237,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     formKey.currentState!.save();
 
-    // FormData formData = FormData.fromMap({
-    //   'name': nameController.text.trim(),
-    //   'email': emailController.text.trim(),
-    // });
-
     Dio dio = Dio();
     Response response;
     try {
-      print("hello");
       response = await dio.put(
         '${Configuration.baseUrl}${Configuration.updateUserUrl}/$userId',
         options: Options(headers: {
@@ -348,7 +254,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       if (response.statusCode == 200) {
         if (response.data['success'] == true) {
-          print(response.data['message']);
           if (!mounted) return;
           if (userId == notificationUserId) {
             AwesomeNotifications().createNotification(
@@ -363,49 +268,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
             isLoading = false;
           });
           Navigator.pushAndRemoveUntil(
+              // ignore: use_build_context_synchronously
               context,
               MaterialPageRoute(builder: (context) => const HomeScreen()),
               (route) => false);
         } else {
-          print(response.data['message']);
           setState(() {
             isLoading = false;
           });
         }
       }
     } catch (ex) {
-      print(ex.toString());
       setState(() {
         isLoading = false;
       });
     }
-
-////////////////////////////
-    //   var url = Uri.parse('${Config.baseUrl}${Config.createAutosUrl}');
-
-    //   var request = http.MultipartRequest('POST', url);
-    //   request.fields['categoryId'] = widget.category.sId;
-    //   request.fields['userId'] = "${userId}";
-    //   request.fields['title'] = titleController.text.trim();
-    //   request.fields['price'] = priceController.text.trim();
-    //   for (var file in images) {
-    //     request.files.add(await http.MultipartFile.fromPath('img', file.path,
-    //         filename: file.path.split("/").last));
-    //     // request.files.add(http.MultipartFile.fromBytes(
-    //     //     'img[]', await File.fromUri(Uri.parse(file)).readAsBytes()));
-    //   }
-    //   request.headers.addAll({
-    //     "Content-Type": "multipart/form-data",
-    //   });
-    //   var response = await request.send();
   }
 }
 
 class MenuItems extends StatelessWidget {
-  IconData icon;
-  String text;
-  Function() ontap;
-  MenuItems({
+  final IconData icon;
+  final String text;
+  final Function() ontap;
+  const MenuItems({
     Key? key,
     required this.icon,
     required this.text,
@@ -432,9 +317,9 @@ class MenuItems extends StatelessWidget {
 }
 
 class Buttontext extends StatelessWidget {
-  String text;
-  Function() ontap;
-  Buttontext({
+  final String text;
+  final Function() ontap;
+  const Buttontext({
     Key? key,
     required this.text,
     required this.ontap,

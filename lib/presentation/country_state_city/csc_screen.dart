@@ -1,5 +1,5 @@
+/*This is the Change Location Screen*/
 import 'package:csc_picker/csc_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,7 +7,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:selby/core/ui.dart';
 import 'package:selby/presentation/home/home_screen.dart';
-import 'package:selby/presentation/home/user_feed_screen.dart';
 import 'package:selby/presentation/widgets/primary_button.dart';
 import 'package:selby/provider/csc_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,14 +30,11 @@ class _CscScreenState extends State<CscScreen> {
       var status = await Permission.location.status;
       if (status.isDenied) {
         openAppSettings();
-        //  ScaffoldMessenger.of(context)
-        //   .showSnackBar(SnackBar(content: Text(ex.toString())));
       } else {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(ex.toString())));
       }
-      // ScaffoldMessenger.of(context)
-      //     .showSnackBar(SnackBar(content: Text(ex.toString())));
     }
   }
 
@@ -49,7 +45,6 @@ class _CscScreenState extends State<CscScreen> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       Geolocator.requestPermission();
-      // return Future.error('Location services are disabled. Please enable.');
     }
 
     permission = await Geolocator.checkPermission();
@@ -68,9 +63,6 @@ class _CscScreenState extends State<CscScreen> {
     }
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.low);
-    // print(position);
-
-    //return await Geolocator.getCurrentPosition();
     return getAddressFromLatLang(position);
   }
 
@@ -85,22 +77,22 @@ class _CscScreenState extends State<CscScreen> {
     await preferences.setString('state', place.administrativeArea.toString());
     await preferences.setString('pincode', place.postalCode.toString());
     await preferences.setString('country', place.country.toString());
+    // ignore: use_build_context_synchronously
     context.read<CscProvider>().changeCsc(
         newCity: place.locality.toString(),
         newState: place.administrativeArea.toString(),
         newCountry: place.country.toString());
     if (place.toString() != '') {
-      // Navigator.pop(context, true);
       Navigator.pushAndRemoveUntil(
+          // ignore: use_build_context_synchronously
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<CscProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
@@ -125,7 +117,7 @@ class _CscScreenState extends State<CscScreen> {
               style: TextStyle(
                   fontWeight: FontWeight.bold, color: Colors.grey.shade500),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             CSCPicker(
@@ -146,36 +138,30 @@ class _CscScreenState extends State<CscScreen> {
                 cityValue = city.toString().replaceAll('ā', 'a');
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             PrimaryButton(
               text: "Submit",
               onPressed: () async {
-                // SharedPreferences preferences =
-                //     await SharedPreferences.getInstance();
-                print(cityValue);
                 context.read<CscProvider>().changeCsc(
                     newCity: cityValue,
                     newState: stateValue,
                     newCountry: countryValue);
-                // await preferences.setString('city', cityValue.toString());
-                // await preferences.setString('state', stateValue.toString());
-                // await preferences.setString('country', countryValue.toString());
-                // Navigator.pop(context);
+
                 Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
                     (route) => false);
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             const Center(
               child: Text("- OR -"),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             PrimaryButton(

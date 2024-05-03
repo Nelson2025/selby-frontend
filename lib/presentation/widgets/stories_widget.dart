@@ -1,10 +1,11 @@
+/* This is Story Widget*/
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:selby/models/product_model.dart';
 import 'package:selby/provider/csc_provider.dart';
@@ -12,12 +13,10 @@ import 'package:story_view/story_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:selby/core/configuration.dart';
 import 'package:selby/core/ui.dart';
-import 'package:selby/models/autos_model.dart';
-import 'package:selby/presentation/product/autos_details_screen.dart';
-import 'package:selby/provider/autos_provider.dart';
+import 'package:selby/presentation/product/product_details_screen.dart';
 
 class StoriesWidget extends StatefulWidget {
-  StoriesWidget({super.key});
+  const StoriesWidget({super.key});
 
   @override
   State<StoriesWidget> createState() => _StoriesWidgetState();
@@ -46,7 +45,6 @@ class _StoriesWidgetState extends State<StoriesWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setState(() {
       city = Provider.of<CscProvider>(context, listen: false).city.toString();
@@ -57,31 +55,19 @@ class _StoriesWidgetState extends State<StoriesWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AutosProvider>(context, listen: false);
     return ScrollConfiguration(
       behavior: const ScrollBehavior().copyWith(overscroll: false),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 10),
-          //   child: Container(
-          //     height: 135,
-          //     width: double.infinity,
-          //     child: Stories(),
-          //   ),
-          // ),
-          // Divider(
-          //   color: Colors.black12,
-          // ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -92,47 +78,17 @@ class _StoriesWidgetState extends State<StoriesWidget> {
                       color: Colors.black12,
                       fontWeight: FontWeight.w900),
                 ),
-                // Row(
-                //   children: <Widget>[
-                //     Icon(
-                //       Ionicons.eye_outline,
-                //       color: AppColors.main,
-                //       size: 18,
-                //     ),
-                //     SizedBox(
-                //       width: 5,
-                //     ),
-                //     Text("See All",
-                //         style: TextStyle(
-                //             fontWeight: FontWeight.w500,
-                //             fontSize: 12,
-                //             color: AppColors.main))
-                //   ],
-                // )
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: SizedBox(
               height: 84,
-              child:
-                  // FutureBuilder(
-                  //     future: provider.fetchAllAutos(),
-                  //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  //       if (!snapshot.hasData) {
-                  //         return Center(
-                  //           child: CircularProgressIndicator(),
-                  //         );
-                  //       } else {
-                  //         List<AutosModel> products = snapshot.data;
-
-                  // print("${Config.imageUrl}${products[0].image}");
-
-                  ListView.separated(
+              child: ListView.separated(
                 itemCount: products.length <= 50 ? products.length : 50,
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
@@ -154,60 +110,28 @@ class _StoriesWidgetState extends State<StoriesWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(
-                          child: CachedNetworkImage(
-                            width: MediaQuery.of(context).size.width / 5,
-                            imageUrl:
-                                '${Configuration.imageUrl}${products[index].image!.first.toString()}',
-                            imageBuilder: (context, imageProvider) => Container(
-                              width: 80.0,
-                              height: 80.0,
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: AppColors.main, width: 2),
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image: imageProvider, fit: BoxFit.cover),
-                              ),
+                        CachedNetworkImage(
+                          width: MediaQuery.of(context).size.width / 5,
+                          imageUrl:
+                              '${Configuration.imageUrl}${products[index].image!.first.toString()}',
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: 80.0,
+                            height: 80.0,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: AppColors.main, width: 2),
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
                             ),
                           ),
                         ),
-
-                        // CircleAvatar(
-                        //   backgroundImage: NetworkImage(
-                        //       '${Config.imageUrl}${products[index].image!.first.toString()}'),
-                        // ),
                       ],
                     ),
                   ),
                 ),
                 separatorBuilder: (context, index) => const SizedBox(width: 10),
-
-                // children: <Widget>[
-                //   Material(
-                //     child: InkWell(
-                //       onTap: () {
-                //         Navigator.of(context).push(MaterialPageRoute(
-                //             builder: (context) => MoreStories(
-                //                   image:
-                //                       "https://image.ibb.co/cU4WGx/Omotuo-Groundnut-Soup-braperucci-com-1.jpg",
-                //                 )));
-                //       },
-                //       child: Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: <Widget>[
-                //           CircleAvatar(
-                //             backgroundColor: Colors.purple,
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ],
               ),
-              //   }
-              // }
-              // ),
             ),
           ),
         ],
@@ -232,14 +156,12 @@ class _StoriesWidgetState extends State<StoriesWidget> {
       });
       final response = await http.get(
         Uri.parse(
-            '${Configuration.baseUrl}${Configuration.fetchAllAutosUrl}/$limit/${products.length}/$city'),
+            '${Configuration.baseUrl}${Configuration.fetchAllProductsUrl}/$limit/${products.length}/$city'),
       );
-      // print(response.body);
 
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
-        // print(result);
-        //print(result['totalRecords']);
+
         result['data']?.forEach((value) => {
               products.add(
                 ProductModel(
@@ -263,18 +185,17 @@ class _StoriesWidgetState extends State<StoriesWidget> {
           totalProducts = result['totalRecords'];
           products;
         });
-        //return autos;
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 }
 
 class MoreStories extends StatefulWidget {
-  List<String> images;
-  String title;
-  String productId;
+  final List<String> images;
+  final String title;
+  final String productId;
   MoreStories({
     Key? key,
     required this.images,
@@ -282,7 +203,7 @@ class MoreStories extends StatefulWidget {
     required this.productId,
   }) : super(key: key);
 
-  List<StoryItem> img = [];
+  final List<StoryItem> img = [];
 
   @override
   _MoreStoriesState createState() => _MoreStoriesState();
@@ -290,12 +211,6 @@ class MoreStories extends StatefulWidget {
 
 class _MoreStoriesState extends State<MoreStories> {
   final storyController = StoryController();
-  // List<StoryItem> quotes = [
-  //   //"Quote" is the the name of the class of the second dart file.
-
-  //   "2",
-  //   "3",
-  // ];
   @override
   void dispose() {
     storyController.dispose();
@@ -304,9 +219,6 @@ class _MoreStoriesState extends State<MoreStories> {
 
   @override
   Widget build(BuildContext context) {
-    //  for (var items in widget.images) {
-    //                     widget.img.add('${Config.imageUrl}$items');
-    //                   }
     return Scaffold(
       appBar: AppBar(
         title: InkWell(
@@ -314,7 +226,7 @@ class _MoreStoriesState extends State<MoreStories> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => AutosDetailsScreen(
+                  builder: (context) => ProductDetailsScreen(
                         autosId: widget.productId,
                       )),
             )
@@ -335,7 +247,7 @@ class _MoreStoriesState extends State<MoreStories> {
               url: img,
               caption: Text(
                 widget.title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15,
                   color: Colors.white,
                 ),

@@ -1,3 +1,5 @@
+/*This is the model of Products*/
+
 import 'dart:convert';
 
 import 'package:selby/models/category_model.dart';

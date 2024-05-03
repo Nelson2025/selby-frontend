@@ -1,3 +1,5 @@
+/*These utils is the snackbar to show on different error response*/
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';

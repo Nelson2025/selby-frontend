@@ -1,4 +1,6 @@
+/* This is Product List Screen which shows after selecting categories and subcategories from HomePage*/
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
@@ -6,15 +8,8 @@ import 'package:selby/core/configuration.dart';
 
 import 'package:selby/core/ui.dart';
 import 'package:selby/models/product_model.dart';
-import 'package:selby/presentation/category/select_category_screen.dart';
-import 'package:selby/presentation/product/autos_details_screen.dart';
-import 'package:selby/presentation/product/productSubCategory.dart';
-import 'package:selby/presentation/widgets/autos_widget.dart';
-import 'package:selby/presentation/widgets/categories_list.dart';
-import 'package:selby/presentation/widgets/gap_widget.dart';
-import 'package:selby/presentation/widgets/rent_car_banner.dart';
-import 'package:selby/presentation/widgets/stories_widget.dart';
-import 'package:selby/provider/autos_provider.dart';
+import 'package:selby/presentation/product/product_details_screen.dart';
+import 'package:selby/provider/products_provider.dart';
 
 class ProductList extends StatefulWidget {
   final String categoryId;
@@ -32,12 +27,11 @@ class ProductList extends StatefulWidget {
 class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AutosProvider>(context, listen: false);
-    // provider.fetchAllAutos();
+    final provider = Provider.of<ProductProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.main,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
         ),
         title: Column(
@@ -46,7 +40,7 @@ class _ProductListState extends State<ProductList> {
             Image.asset(
               'assets/images/selby_logo.png',
               width: 100,
-            )
+            ),
           ],
         ),
         actions: [
@@ -57,13 +51,6 @@ class _ProductListState extends State<ProductList> {
               color: AppColors.white,
             ),
           ),
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: Icon(
-          //     Ionicons.search_outline,
-          //     color: AppColors.white,
-          //   ),
-          // ),
         ],
       ),
       body: Padding(
@@ -73,7 +60,7 @@ class _ProductListState extends State<ProductList> {
                   widget.categoryId, widget.subcategoryId),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else {
@@ -92,24 +79,12 @@ class _ProductListState extends State<ProductList> {
                     itemBuilder: (_, index) {
                       return GestureDetector(
                         onTap: () => {
-                          // if (cdata[index].title == 'Autos')
-                          //   {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AutosDetailsScreen(
+                                  builder: (context) => ProductDetailsScreen(
                                         autosId: cdata[index].sId!,
                                       )))
-                          //   }
-                          // else
-                          //   {
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) => AutosDetailsScreen(
-                          //                   autosId: cdata[index].sId!,
-                          //                 )))
-                          //   }
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -127,10 +102,10 @@ class _ProductListState extends State<ProductList> {
                                     height:
                                         MediaQuery.of(context).size.width * 0.4,
                                     // alignment: Alignment.center,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.black12,
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(12)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(12)),
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(12),
@@ -152,7 +127,7 @@ class _ProductListState extends State<ProductList> {
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.06,
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color: Colors.white,
                                           shape: BoxShape.circle,
                                           boxShadow: [
@@ -172,7 +147,6 @@ class _ProductListState extends State<ProductList> {
                                   ),
                                 ],
                               ),
-                              // const SizedBox(height: 10),
                               Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -185,7 +159,7 @@ class _ProductListState extends State<ProductList> {
                                         padding: const EdgeInsets.all(3.0),
                                         child: Text(
                                           "${cdata[index].categoryId['title']}",
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 10),
                                         ),
@@ -211,7 +185,7 @@ class _ProductListState extends State<ProductList> {
                                     const SizedBox(width: 10),
                                     Text(
                                       "₹${cdata[index].price}",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w700),
                                     ),
@@ -225,7 +199,7 @@ class _ProductListState extends State<ProductList> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Ionicons.location_outline,
                                       size: 13,
                                     ),

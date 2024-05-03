@@ -1,3 +1,4 @@
+/* This is Secondary TextFirled Widget*/
 import 'package:flutter/material.dart';
 
 class SecondaryTextField extends StatelessWidget {
@@ -30,11 +31,11 @@ class SecondaryTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: labelText,
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           color: Colors.grey,
           fontSize: 16.0,
         ),
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           color: Colors.black,
           fontSize: 14.0,
           fontWeight: FontWeight.w400,
@@ -47,12 +48,12 @@ class SecondaryTextField extends StatelessWidget {
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        floatingLabelStyle: TextStyle(
+        floatingLabelStyle: const TextStyle(
           color: Colors.black,
           fontSize: 18.0,
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 1.5),
+          borderSide: const BorderSide(color: Colors.black, width: 1.5),
           borderRadius: BorderRadius.circular(10.0),
         ),
       ),

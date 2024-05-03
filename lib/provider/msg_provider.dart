@@ -1,3 +1,4 @@
+/* This is Message Provider*/
 import 'dart:convert';
 import 'dart:developer';
 
@@ -6,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:selby/core/configuration.dart';
 import 'package:selby/models/msg_model.dart';
 import 'package:selby/models/room_model.dart';
-import 'package:selby/models/user_model.dart';
 import 'package:selby/services/msg_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -15,7 +15,6 @@ import 'package:http/http.dart' as http;
 class MessageProvider extends ChangeNotifier {
   List<MsgModel> messagesList = [];
   RoomModel? roomModel = RoomModel();
-  // String? roomId;
   MessageService messageService = MessageService();
   late IO.Socket socket;
   getMessageChart(
@@ -43,27 +42,6 @@ class MessageProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // File? image;
-  // final picker = ImagePicker();
-  // // Implementing the image picker
-  // Future openImagePicker(BuildContext context) async {
-  //   final XFile? pickedImage =
-  //       await picker.pickImage(source: ImageSource.gallery);
-  //   if (pickedImage != null) {
-  //     image = File(pickedImage.path);
-  //     notifyListeners();
-  //   } else {
-  //     // image = null;
-  //     notifyListeners();
-  //   }
-  //   Navigator.pop(context);
-  // }
-
-  // makeImageNull() {
-  //   image = null;
-  //   notifyListeners();
-  // }
-
   sendMessage(
       {required String clientId,
       required String userModel,
@@ -71,36 +49,7 @@ class MessageProvider extends ChangeNotifier {
       required String? roomId,
       required String? productId}) async {
     log('message initiated');
-    print(roomId);
-//     if (image != null) {
-//       await messageService
-//           .uploadImageToCloudinary(image!.path)
-//           .then((value) async {
-//         log(value.toString() + 'aaaaaaa');
-//         await messageService
-//             .sendMessage(
-//                 clientId: clientId,
-//                 myId: userModel.sId!,
-//                 message: message,
-//                 image: value)
-//             .then((val) {
-//           socket.emit('send-msg', {
-//             'roomId': roomModel!.sId,
-//             'to': clientId,
-//             'message': message,
-//             'image': value
-//           });
-
-//           addNewMessage(
-//               MsgModel(message: message, fromSelf: true, image: value));
-//           makeImageNull();
-//         });
-
-// // messagesList.last.image=value;
-
-//         notifyListeners();
-//       });
-//     } else {
+    log(roomId.toString());
     await messageService
         .sendMessage(
             clientId: clientId,
@@ -118,7 +67,6 @@ class MessageProvider extends ChangeNotifier {
       addNewMessage(MsgModel(message: message, fromSelf: true));
       notifyListeners();
     });
-    // }
   }
 
   getRoomId(
@@ -126,9 +74,6 @@ class MessageProvider extends ChangeNotifier {
     roomModel = null;
     roomModel = await messageService.createRoom(
         clientModel: clientModel, myModel: myModel, productId: productId);
-    // print("roomModel" + jsonEncode(roomModel));
-    // roomId = roomModel!.sId.toString();
-    // print("roomId" + roomId.toString());
     notifyListeners();
   }
 
@@ -137,18 +82,14 @@ class MessageProvider extends ChangeNotifier {
     String userId = '';
     SharedPreferences preferences = await SharedPreferences.getInstance();
     userId = preferences.getString('userId').toString();
-    // setLoading(true);
-    // notifyListeners();
     try {
       final response = await http.get(
         Uri.parse(
             '${Configuration.baseUrl}${Configuration.fetchRoomByIdUrl}$userId'),
       );
-      // print(response.body);
 
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
-        print(result);
         result['data'].forEach((value) => {
               rooms.add(
                 RoomModel(
@@ -168,11 +109,7 @@ class MessageProvider extends ChangeNotifier {
         return [];
       }
     } catch (ex) {
-      // setLoading(false);
-      // print(ex.toString());
-      // notifyListeners();
-      print(ex.toString());
-      //rethrow;
+      log(ex.toString());
     }
   }
 }

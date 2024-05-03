@@ -1,38 +1,4 @@
-// import 'dart:convert';
-
-// class OtpModel {
-//   String? fullHash;
-//   String? otp;
-
-//   String? phone;
-
-//   OtpModel({
-//     this.fullHash,
-//     this.otp,
-//     this.phone,
-//   });
-
-//   Map<String, dynamic> toMap() {
-//     return <String, dynamic>{
-//       'fullHash': fullHash,
-//       'otp': otp,
-//       'phone': phone,
-//     };
-//   }
-
-//   factory OtpModel.fromMap(Map<String, dynamic> map) {
-//     return OtpModel(
-//       fullHash: map['fullHash'] ?? '',
-//       otp: map['otp'] ?? '',
-//       phone: map['phone'] ?? '',
-//     );
-//   }
-
-//   String toJson() => json.encode(toMap());
-
-//   factory OtpModel.fromJson(String source) =>
-//       OtpModel.fromMap(json.decode(source) as Map<String, dynamic>);
-// }
+/*This is the model of OTP*/
 
 import 'dart:convert';
 

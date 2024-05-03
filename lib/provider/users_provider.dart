@@ -1,3 +1,4 @@
+/* This is Users & Create OTP Provider*/
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -10,7 +11,7 @@ import 'package:selby/models/otp_model.dart';
 import 'package:selby/models/user_model.dart';
 import 'package:selby/services/auth_services.dart';
 
-class AuthProvider extends ChangeNotifier {
+class UsersProvider extends ChangeNotifier {
   bool _loading = false;
   bool get loading => _loading;
 
@@ -48,14 +49,11 @@ class AuthProvider extends ChangeNotifier {
 
   fetchUsersById(String id) async {
     List<UserModel> usersList = [];
-    // setLoading(true);
-    // notifyListeners();
     try {
       final response = await http.get(
         Uri.parse(
             '${Configuration.baseUrl}${Configuration.fetchUserByIdUrl}$id'),
       );
-      // var list = response.body as List;
 
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
@@ -88,11 +86,7 @@ class AuthProvider extends ChangeNotifier {
         return [];
       }
     } catch (ex) {
-      // setLoading(false);
-      // print(ex.toString());
-      // notifyListeners();
-      print(ex.toString());
-      //rethrow;
+      log(ex.toString());
     }
   }
 
@@ -108,24 +102,22 @@ class AuthProvider extends ChangeNotifier {
 
       if (request.statusCode == 200 || request.statusCode == 201) {
         final response = jsonDecode(request.body);
-        // print(response['data']);
-        // print(response['data']['phone'])
         otpModel(response.body);
         setLoading(false);
         notifyListeners();
       } else {
         final response = jsonDecode(request.body);
-        print(response);
+        log(response);
         setLoading(false);
         notifyListeners();
       }
     } on SocketException catch (ex) {
       setLoading(false);
-      print(ex.toString());
+      log(ex.toString());
       notifyListeners();
     } catch (ex) {
       setLoading(false);
-      print(ex.toString());
+      log(ex.toString());
       notifyListeners();
     }
   }

@@ -1,7 +1,7 @@
+/*This is the model of Room for messaging*/
 import 'dart:convert';
 
 import './user_model.dart';
-import './result_model.dart';
 
 RoomModel roomModel(String str) => RoomModel.fromJson(jsonDecode(str));
 
@@ -35,12 +35,6 @@ class RoomModel {
       users = <UserModel>[];
       json['users'].forEach((v) {
         users!.add(new UserModel.fromJson(v));
-      });
-    }
-    if (json['results'] != null) {
-      results = <ResultModel>[];
-      json['results'].forEach((v) {
-        results!.add(new ResultModel.fromJson(v));
       });
     }
     if (json['senderDetails'] != null) {

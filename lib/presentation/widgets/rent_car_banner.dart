@@ -1,9 +1,14 @@
-import 'package:flutter/foundation.dart';
+/* This is Rent Car Banner Widget*/
 import 'package:flutter/material.dart';
 
-class RentCarBanner extends StatelessWidget {
+class RentCarBanner extends StatefulWidget {
   const RentCarBanner({super.key});
 
+  @override
+  State<RentCarBanner> createState() => _RentCarBannerState();
+}
+
+class _RentCarBannerState extends State<RentCarBanner> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,31 +35,30 @@ class RentCarBanner extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 2,
                   ),
-                  Text(
+                  const Text(
                     "Want to Rent a Car",
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
                   ),
-                  Text(
-                    "Selby presents Self-Driving Car",
+                  const Text(
+                    "Selby presents",
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Colors.white70),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
                     height: 26,
-                    width: 120,
+                    width: 100,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
                       gradient: LinearGradient(
                           colors: [Colors.yellow, Colors.amber.shade800],
                           begin: Alignment.topCenter,
@@ -63,12 +67,9 @@ class RentCarBanner extends StatelessWidget {
                     child: MaterialButton(
                       onPressed: () {},
                       height: 26,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
                       elevation: 4,
-                      child: Text(
-                        "RENT CAR",
+                      child: const Text(
+                        "Rent Car",
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
